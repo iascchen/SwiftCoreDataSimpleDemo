@@ -12,6 +12,7 @@
 
 import CoreData
 
+@objc(Member)
 class Member: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var sex: String
