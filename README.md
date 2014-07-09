@@ -8,8 +8,6 @@ Florian Kugler gaved some advices for core data performance, [Concurrent Core Da
 
 I changed the implements to support this best practice. We should better write data in private background context, and read data from main queue context.
 
-In your IOS application, 
-
 ## Step by Step
 
 1. Create an Empty Application, and select in Swift language and use CoreData.
