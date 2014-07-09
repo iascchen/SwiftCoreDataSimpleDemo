@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03D9723C194D8F8B00805A0C /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D9723B194D8F8B00805A0C /* Member.swift */; };
 		87794B371942DE1E0034663A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87794B361942DE1E0034663A /* AppDelegate.swift */; };
 		87794B3A1942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 87794B381942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld */; };
 		87794B3C1942DE1E0034663A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87794B3B1942DE1E0034663A /* Images.xcassets */; };
 		87794B481942DE1E0034663A /* SwiftCoreDataSimpleDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87794B471942DE1E0034663A /* SwiftCoreDataSimpleDemoTests.swift */; };
 		87794B551942DF3C0034663A /* Family.m in Sources */ = {isa = PBXBuildFile; fileRef = 87794B541942DF3C0034663A /* Family.m */; };
-		87794B581942DF3D0034663A /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 87794B571942DF3D0034663A /* Member.m */; };
 		87794B611942EADE0034663A /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87794B5F1942EADE0034663A /* CoreDataHelper.swift */; };
 		87794B7B1942FA770034663A /* img00.png in Resources */ = {isa = PBXBuildFile; fileRef = 87794B691942FA770034663A /* img00.png */; };
 		87794B7C1942FA770034663A /* img01.png in Resources */ = {isa = PBXBuildFile; fileRef = 87794B6A1942FA770034663A /* img01.png */; };
@@ -59,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03D9723B194D8F8B00805A0C /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Member.swift; path = SwiftCoreDataSimpleDemo/Member.swift; sourceTree = "<group>"; };
 		87794B311942DE1E0034663A /* SwiftCoreDataSimpleDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCoreDataSimpleDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87794B351942DE1E0034663A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87794B361942DE1E0034663A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -70,8 +71,6 @@
 		87794B521942DF3C0034663A /* SwiftCoreDataSimpleDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftCoreDataSimpleDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		87794B531942DF3C0034663A /* Family.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Family.h; path = SwiftCoreDataSimpleDemo/Family.h; sourceTree = "<group>"; };
 		87794B541942DF3C0034663A /* Family.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Family.m; path = SwiftCoreDataSimpleDemo/Family.m; sourceTree = "<group>"; };
-		87794B561942DF3D0034663A /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Member.h; path = SwiftCoreDataSimpleDemo/Member.h; sourceTree = "<group>"; };
-		87794B571942DF3D0034663A /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Member.m; path = SwiftCoreDataSimpleDemo/Member.m; sourceTree = "<group>"; };
 		87794B5F1942EADE0034663A /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		87794B691942FA770034663A /* img00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img00.png; sourceTree = "<group>"; };
 		87794B6A1942FA770034663A /* img01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img01.png; sourceTree = "<group>"; };
@@ -171,8 +170,7 @@
 		87794B511942DEF30034663A /* models */ = {
 			isa = PBXGroup;
 			children = (
-				87794B561942DF3D0034663A /* Member.h */,
-				87794B571942DF3D0034663A /* Member.m */,
+				03D9723B194D8F8B00805A0C /* Member.swift */,
 				87794B531942DF3C0034663A /* Family.h */,
 				87794B541942DF3C0034663A /* Family.m */,
 				87794B521942DF3C0034663A /* SwiftCoreDataSimpleDemo-Bridging-Header.h */,
@@ -334,7 +332,7 @@
 				87794B8C1942FA770034663A /* swift_coredata_sample.md in Sources */,
 				87794B551942DF3C0034663A /* Family.m in Sources */,
 				87794B3A1942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld in Sources */,
-				87794B581942DF3D0034663A /* Member.m in Sources */,
+				03D9723C194D8F8B00805A0C /* Member.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
