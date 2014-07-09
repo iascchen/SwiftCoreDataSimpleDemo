@@ -1,8 +1,8 @@
 //
-//  Member.h
+//  Family.h
 //  SwiftCoreDataSimpleDemo
 //
-//  Created by CHENHAO on 14-6-7.
+//  Created by CHENHAO on 14-7-9.
 //  Copyright (c) 2014年 CHENHAO. All rights reserved.
 //
 
@@ -10,10 +10,9 @@
 #import <CoreData/CoreData.h>
 
 
-@interface Member : NSManagedObject
+@interface Family : NSManagedObject
 
+@property (nonatomic, retain) NSString * address;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * sex;
-@property (nonatomic, retain) NSDate * birthday;
 
 @end

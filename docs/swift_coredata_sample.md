@@ -71,7 +71,7 @@
 ---
 ## 修改 AppDelegate
 
-和新建 ObjC App 类似，新建项目将操作 CoreData 的代码添加在 AppDelegate.swift 文件中。为了能够使代码更简洁和清晰，我们将这部分代码提炼出来，移动到 CoreDataHelper.swift 中去。
+和新建 ObjC App 类似，新建项目将操作 CoreData 的代码添加在 AppDelegate.swift 文件中。为了能够使代码更简洁和清晰，我们将这部分代码提炼出来，移动到 CoreDataHelper.swift 和 CoreDataStore.swift 中去。
 
 * 打开原始的 AppDelegate.swift，在程序的后半部分，能够看见操作 CoreData 相关的代码.如下图所示。
 
@@ -83,42 +83,26 @@
 ![](images/img18.png)
 ![](images/img19.png)
 
-* 在 AppDelegate.swift 中将 `func saveContext ()` 及其后面的代码选中，转移到 CoreDataHelper.swift 文件中。并对其做些小调整，将所用到的项目名称提成常量，放在 CoreDataHelper 前部，这样，以后如果需要在历史项目中使用 CoreDataHelper，就十分方便了。
+* 在 AppDelegate.swift 中将 `func saveContext ()` 及其后面的代码选中，转移到 CoreDataStore.swift 和 CoreDataHelper.swift 文件中。并对其做些小调整，将所用到的项目名称提成常量，放在 CoreDataHelper 前部，这样，以后如果需要在历史项目中使用 CoreDataHelper，就十分方便了。
 
 ![](images/img20.png)
 
-完成后的 CoreDataHelper.swift 代码如下：
+完成后的 CoreDataStore.swift 代码如下：
 
     //
-    //  CoreDataHelper.swift
+    //  CoreDataStore.swift
     //  SwiftCoreDataSimpleDemo
     //
-    //  Created by CHENHAO on 14-6-7.
-    //  Copyright (c) 2014年 CHENHAO. All rights reserved.
+    //  Created by CHENHAO on 14-7-9.
+    //  Copyright (c) 2014 CHENHAO. All rights reserved.
     //
     
-    import CoreData
+    import Foundation
     
-    class CoreDataHelper{
+    class CoreDataStore: NSObject{
         
         let storeName = "SwiftCoreDataSimpleDemo"
         let storeFilename = "SwiftCoreDataSimpleDemo.sqlite"
-        
-        // #pragma mark - Core Data stack
-        
-        // Returns the managed object context for the application.
-        // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-        var managedObjectContext: NSManagedObjectContext {
-        if !_managedObjectContext {
-            let coordinator = self.persistentStoreCoordinator
-            if coordinator != nil {
-                _managedObjectContext = NSManagedObjectContext()
-                _managedObjectContext!.persistentStoreCoordinator = coordinator
-            }
-            }
-            return _managedObjectContext!
-        }
-        var _managedObjectContext: NSManagedObjectContext? = nil
         
         // Returns the managed object model for the application.
         // If the model doesn't already exist, it is created from the application's model.
@@ -177,29 +161,142 @@
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
             return urls[urls.endIndex-1] as NSURL
         }
+    }
+
+修改 CoreDataHelper.swift ，所有的 NSManagedObjectContext 共享 APPDelegate.swift 中定义的 CoreDataStore 。
+
+Florian Kugler 对如何高效使用 CoreData 给出了很好的建议, [Concurrent Core Data Stacks – Performance Shootout](http://floriankugler.com/blog/2013/4/29/concurrent-core-data-stack-performance-shootout) 和 [Backstage with Nested Managed Object Contexts](http://floriankugler.com/blog/2013/5/11/backstage-with-nested-managed-object-contexts). 
+下面的代码是性能最好的 Stack 3 的实现。大家可以根据自己的需要灵活的使用 MainQueue 或 PrivateQueue 完成 Context 的操作。
+
+如果需要在自己定义的 UIViewController 中使用 CoreDataHelper，建议的做法是为每个 UIViewController 创建自己的 CoreDataHelper 实例。
+不建议所有 UIViewController 共用同一个 NSManagedObjectContext。
+
+CoreDataHelper.swift 完整代码如下：
+
+    //
+    //  CoreDataHelper.swift
+    //  SwiftCoreDataSimpleDemo
+    //
+    //  Created by CHENHAO on 14-6-7.
+    //  Copyright (c) 2014 CHENHAO. All rights reserved.
+    //
+    
+    import CoreData
+    import UIKit
+    
+    class CoreDataHelper: NSObject{
         
-        func saveContext () {
+        let store: CoreDataStore!
+        
+        init(){
+            super.init()
+    
+            // all CoreDataHelper share one CoreDataStore defined in AppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+            self.store = appDelegate.cdstore
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "contextDidSaveContext:", name: NSManagedObjectContextDidSaveNotification, object: nil)
+        }
+        
+        deinit{
+            NSNotificationCenter.defaultCenter().removeObserver(self)
+        }
+        
+        // #pragma mark - Core Data stack
+        
+        // Returns the managed object context for the application.
+        // Normally, you can use it to do anything.
+        // But for bulk data update, acording to Florian Kugler's blog about core data performance, [Concurrent Core Data Stacks – Performance Shootout](http://floriankugler.com/blog/2013/4/29/concurrent-core-data-stack-performance-shootout) and [Backstage with Nested Managed Object Contexts](http://floriankugler.com/blog/2013/5/11/backstage-with-nested-managed-object-contexts). We should better write data in background context. and read data from main queue context.
+        // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
+        
+        // main thread context
+        var managedObjectContext: NSManagedObjectContext {
+        if !_managedObjectContext {
+            let coordinator = self.store.persistentStoreCoordinator
+            if coordinator != nil {
+                _managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+                _managedObjectContext!.persistentStoreCoordinator = coordinator
+            }
+            }
+            return _managedObjectContext!
+        }
+        var _managedObjectContext: NSManagedObjectContext? = nil
+        
+        // Returns the background object context for the application. 
+        // You can use it to process bulk data update in background.
+        // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
+        
+        var backgroundContext: NSManagedObjectContext {
+        if !_backgroundContext {
+            let coordinator = self.store.persistentStoreCoordinator
+            if coordinator != nil {
+                _backgroundContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+                _backgroundContext!.persistentStoreCoordinator = coordinator
+            }
+            }
+            return _backgroundContext!
+        }
+        var _backgroundContext: NSManagedObjectContext? = nil
+        
+        // save NSManagedObjectContext
+        func saveContext (context: NSManagedObjectContext) {
             var error: NSError? = nil
-            let managedObjectContext = self.managedObjectContext
-            if managedObjectContext != nil {
-                if managedObjectContext.hasChanges && !managedObjectContext.save(&error) {
+            if context != nil {
+                if context.hasChanges && !context.save(&error) {
                     // Replace this implementation with code to handle the error appropriately.
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                    //println("Unresolved error \(error), \(error.userInfo)")
+                    NSLog("Unresolved error \(error)")
                     abort()
+                }
+            }
+        }
+        
+        func saveContext () {
+            self.saveContext( self.backgroundContext )
+        }
+        
+        // call back function by saveContext, support multi-thread 
+        func contextDidSaveContext(notification: NSNotification) {
+            let sender = notification.object as NSManagedObjectContext
+            if sender === self.managedObjectContext {
+                NSLog("======= Saved main Context in this thread")
+                self.backgroundContext.performBlock {
+                    self.backgroundContext.mergeChangesFromContextDidSaveNotification(notification)
+                }
+            } else if sender === self.backgroundContext {
+                NSLog("======= Saved background Context in this thread")
+                self.managedObjectContext.performBlock {
+                    self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+                }
+            } else {
+                NSLog("======= Saved Context in other thread")
+                self.backgroundContext.performBlock {
+                    self.backgroundContext.mergeChangesFromContextDidSaveNotification(notification)
+                }
+                self.managedObjectContext.performBlock {
+                    self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
                 }
             }
         }
     }
 	
-	
-* 修改 AppDelegate.swift。并创建一个 CoreDataHelper 的实例，用于操作 CoreData。
+* 修改 AppDelegate.swift。并创建 CoreDataHelper 和 CoreDataStore 的实例，用于操作 CoreData。
 
 将 `applicationWillTerminate(application: UIApplication)` 方法之后的内容全部替换为以下代码。
 
+    // #pragma mark - Core Data Helper
+    
+    var cdstore: CoreDataStore {
+    if !_cdstore {
+        _cdstore = CoreDataStore()
+        }
+        return _cdstore!
+    }
+    var _cdstore: CoreDataStore? = nil
+    
     var cdh: CoreDataHelper {
-    if !_cdh {
-        _cdh = CoreDataHelper()
+        if !_cdh {
+            _cdh = CoreDataHelper()
         }
         return _cdh!
     }
@@ -244,13 +341,13 @@ demoFamily() 的具体实现如下，代码说明请参考注释：
         NSLog(" ======== Insert ======== ")
         
         for newItemName in newItemNames {
-            var newItem: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.managedObjectContext) as Family
+            var newItem: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.backgroundContext) as Family
             
             newItem.name = newItemName
             NSLog("Inserted New Family for \(newItemName) ")
         }
         
-        //self.cdh.saveContext()
+        self.cdh.saveContext(self.cdh.backgroundContext)
         
         //fetch families
         NSLog(" ======== Fetch ======== ")
@@ -258,10 +355,10 @@ demoFamily() 的具体实现如下，代码说明请参考注释：
         var error: NSError? = nil
         var fReq: NSFetchRequest = NSFetchRequest(entityName: "Family")
         
-        // 设置过滤条件
+        // set filter 
         fReq.predicate = NSPredicate(format:"name CONTAINS 'B' ")
         
-        // 设置结果排序规则，此处设置为按 Name 逆序
+        // set result sorter
         var sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
         fReq.sortDescriptors = [sorter]
         
@@ -275,15 +372,15 @@ demoFamily() 的具体实现如下，代码说明请参考注释：
         NSLog(" ======== Delete ======== ")
         
         fReq = NSFetchRequest(entityName: "Family")
-        result = self.cdh.managedObjectContext.executeFetchRequest(fReq, error:&error)
+        result = self.cdh.backgroundContext.executeFetchRequest(fReq, error:&error)
         
         for resultItem : AnyObject in result {
             var familyItem = resultItem as Family
             NSLog("Deleted Family for \(familyItem.name) ")
-            self.cdh.managedObjectContext.deleteObject(familyItem)
+            self.cdh.backgroundContext.deleteObject(familyItem)
         }
         
-        //self.cdh.saveContext()
+        self.cdh.saveContext(self.cdh.backgroundContext)
         
         NSLog(" ======== Check Delete ======== ")
         
@@ -336,9 +433,9 @@ Log输出如下：
     Program ended with exit code: 9
 
 ---
-## 不工作的 Member.swift 代码
+## 用 Swift 编写 NSManagementObject
 
-参考 Swift 文档，尝试创建 Member.swift，编译通过，运行测试失败。因文档有限，没法进一步确定原因。记录在此，以供大家探讨。
+参考 Swift 文档，尝试创建 Member.swift，编译通过，运行成功。
 
 Swift 文档的相关说明如下，[Implementing Core Data Managed Object Subclasses](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/WritingSwiftClassesWithObjective-CBehavior.html#//apple_ref/doc/uid/TP40014216-CH5-XID_66)
 
@@ -356,20 +453,19 @@ Swift 文档的相关说明如下，[Implementing Core Data Managed Object Subcl
 
     import CoreData
     
+    @objc(Member)
     class Member: NSManagedObject {
         @NSManaged var name: String
         @NSManaged var sex: String
         @NSManaged var birthday: NSDate
     }
 
-将 SwiftCoreDataSimpleDemo-Bridging-Header.h 中的 Member.h 行注释掉：
+将 SwiftCoreDataSimpleDemo-Bridging-Header.h 中的 Member.h 行注释掉， 并从项目中删除 Member.h、Member.m 的引用：
 
 	#import "Family.h"
 	// #import "Member.h"
 
-运行之后，编译成功，但运行出错闪退，出错界面如下。
-
-![](images/img21.png)
+运行之后，编译成功.
 
 ---
 ## 代码地址 ##
@@ -385,6 +481,8 @@ Swift 文档的相关说明如下，[Implementing Core Data Managed Object Subcl
 Author : iascchen(at)gmail(dot)com
 
 Date : 2014-6-7
+
+Update : 2014-7-9
 
 新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 

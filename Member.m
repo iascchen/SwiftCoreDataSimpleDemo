@@ -2,7 +2,7 @@
 //  Member.m
 //  SwiftCoreDataSimpleDemo
 //
-//  Created by CHENHAO on 14-6-7.
+//  Created by CHENHAO on 14-7-9.
 //  Copyright (c) 2014年 CHENHAO. All rights reserved.
 //
 
@@ -11,8 +11,8 @@
 
 @implementation Member
 
+@dynamic birthday;
 @dynamic name;
 @dynamic sex;
-@dynamic birthday;
 
 @end

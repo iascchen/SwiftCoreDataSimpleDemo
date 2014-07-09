@@ -3,7 +3,7 @@
 //  SwiftCoreDataSimpleDemo
 //
 //  Created by CHENHAO on 14-6-7.
-//  Copyright (c) 2014年 CHENHAO. All rights reserved.
+//  Copyright (c) 2014 CHENHAO. All rights reserved.
 //
 
 import UIKit
@@ -55,13 +55,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // #pragma mark - Core Data Helper
     
+    var cdstore: CoreDataStore {
+    if !_cdstore {
+        _cdstore = CoreDataStore()
+        }
+        return _cdstore!
+    }
+    var _cdstore: CoreDataStore? = nil
+    
     var cdh: CoreDataHelper {
-    if !_cdh {
-        _cdh = CoreDataHelper()
+        if !_cdh {
+            _cdh = CoreDataHelper()
         }
         return _cdh!
     }
     var _cdh: CoreDataHelper? = nil
+    
+    // #pragma mark - Demo
     
     func demoFamily(){
         var newItemNames = ["Apples", "Milk", "Bread", "Cheese", "Sausages", "Butter", "Orange Juice", "Cereal", "Coffee", "Eggs", "Tomatoes", "Fish"]
@@ -70,13 +80,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog(" ======== Insert ======== ")
         
         for newItemName in newItemNames {
-            var newItem: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.managedObjectContext) as Family
+            var newItem: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.backgroundContext) as Family
             
             newItem.name = newItemName
             NSLog("Inserted New Family for \(newItemName) ")
         }
         
-        //self.cdh.saveContext()
+        self.cdh.saveContext(self.cdh.backgroundContext)
         
         //fetch families
         NSLog(" ======== Fetch ======== ")
@@ -99,15 +109,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog(" ======== Delete ======== ")
         
         fReq = NSFetchRequest(entityName: "Family")
-        result = self.cdh.managedObjectContext.executeFetchRequest(fReq, error:&error)
+        result = self.cdh.backgroundContext.executeFetchRequest(fReq, error:&error)
         
         for resultItem : AnyObject in result {
             var familyItem = resultItem as Family
             NSLog("Deleted Family for \(familyItem.name) ")
-            self.cdh.managedObjectContext.deleteObject(familyItem)
+            self.cdh.backgroundContext.deleteObject(familyItem)
         }
         
-        //self.cdh.saveContext()
+        self.cdh.saveContext(self.cdh.backgroundContext)
         
         NSLog(" ======== Check Delete ======== ")
         
@@ -136,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSLog("Inserted New Member for \(newItemName) ")
         }
         
-        //self.cdh.saveContext()
+        self.cdh.saveContext(self.cdh.managedObjectContext)
         
         //fetch Member
         NSLog(" ======== Fetch ======== ")
@@ -149,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
         fReq.sortDescriptors = [sorter]
         
-        var result = self.cdh.managedObjectContext.executeFetchRequest(fReq, error:&error)
+        var result = self.cdh.backgroundContext.executeFetchRequest(fReq, error:&error)
         for resultItem : AnyObject in result {
             var familyItem = resultItem as Member
             NSLog("Fetched Member for \(familyItem.name) ")
@@ -167,11 +177,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.cdh.managedObjectContext.deleteObject(familyItem)
         }
         
-        //self.cdh.saveContext()
+        self.cdh.saveContext(self.cdh.managedObjectContext)
         
         NSLog(" ======== Check Delete ======== ")
         
-        result = self.cdh.managedObjectContext.executeFetchRequest(fReq, error:&error)
+        result = self.cdh.backgroundContext.executeFetchRequest(fReq, error:&error)
         if result.isEmpty {
             NSLog("Deleted All Member")
         }
