@@ -36,6 +36,8 @@ I tried to write a NSManagedObject class named Member.swift according to [Implem
 
 It is WORKED . Thanks for joshhinman's contributions.
 
+PS. In Xcode6-beta3, You can generate NSManagedObject in swift, but you should add sentence like `@objc(Member)` manualy. 
+
 ---
 
 Author : iascchen(at)gmail(dot)com
