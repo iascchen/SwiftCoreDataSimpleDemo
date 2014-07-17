@@ -42,7 +42,7 @@ PS. In Xcode6-beta3, You can generate NSManagedObject in swift, but you should a
 
 Author : iascchen(at)gmail(dot)com
 
-Date : 2014-7-9
+Date : 2014-7-17
 
 新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 
