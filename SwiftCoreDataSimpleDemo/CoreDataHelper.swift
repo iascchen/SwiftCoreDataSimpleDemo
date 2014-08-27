@@ -13,9 +13,9 @@ class CoreDataHelper: NSObject{
     
     let store: CoreDataStore!
     
-    init(){
+    override init(){
         super.init()
-
+        
         // all CoreDataHelper share one CoreDataStore defined in AppDelegate
         let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
         self.store = appDelegate.cdstore
@@ -35,71 +35,69 @@ class CoreDataHelper: NSObject{
     // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
     
     // main thread context
-    var managedObjectContext: NSManagedObjectContext {
-    if !_managedObjectContext {
-        let coordinator = self.store.persistentStoreCoordinator
-        if coordinator != nil {
-            _managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-            _managedObjectContext!.persistentStoreCoordinator = coordinator
-        }
-        }
-        return _managedObjectContext!
-    }
-    var _managedObjectContext: NSManagedObjectContext? = nil
     
-    // Returns the background object context for the application. 
+    lazy var managedObjectContext: NSManagedObjectContext? = {
+        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
+        let coordinator = self.store.persistentStoreCoordinator
+        if coordinator == nil {
+            return nil
+        }
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = coordinator
+        return managedObjectContext
+        }()
+    
+    // Returns the background object context for the application.
     // You can use it to process bulk data update in background.
     // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
     
-    var backgroundContext: NSManagedObjectContext {
-    if !_backgroundContext {
+    lazy var backgroundContext: NSManagedObjectContext? = {
+        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.store.persistentStoreCoordinator
-        if coordinator != nil {
-            _backgroundContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
-            _backgroundContext!.persistentStoreCoordinator = coordinator
+        if coordinator == nil {
+            return nil
         }
-        }
-        return _backgroundContext!
-    }
-    var _backgroundContext: NSManagedObjectContext? = nil
-
+        var backgroundContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+        backgroundContext.persistentStoreCoordinator = coordinator
+        return backgroundContext
+        }()
+    
+    
     // save NSManagedObjectContext
     func saveContext (context: NSManagedObjectContext) {
         var error: NSError? = nil
-        if context != nil {
-            if context.hasChanges && !context.save(&error) {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                NSLog("Unresolved error \(error)")
-                abort()
-            }
+        if context.hasChanges && !context.save(&error) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog("Unresolved error \(error), \(error!.userInfo)")
+            abort()
         }
     }
     
     func saveContext () {
-        self.saveContext( self.backgroundContext )
+        self.saveContext( self.backgroundContext! )
     }
-
+    
     // call back function by saveContext, support multi-thread
     func contextDidSaveContext(notification: NSNotification) {
         let sender = notification.object as NSManagedObjectContext
         if sender === self.managedObjectContext {
             NSLog("======= Saved main Context in this thread")
-            self.backgroundContext.performBlock {
-                self.backgroundContext.mergeChangesFromContextDidSaveNotification(notification)
+            self.backgroundContext!.performBlock {
+                self.backgroundContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
         } else if sender === self.backgroundContext {
             NSLog("======= Saved background Context in this thread")
-            self.managedObjectContext.performBlock {
-                self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+            self.managedObjectContext!.performBlock {
+                self.managedObjectContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
         } else {
             NSLog("======= Saved Context in other thread")
-            self.backgroundContext.performBlock {
-                self.backgroundContext.mergeChangesFromContextDidSaveNotification(notification)
+            self.backgroundContext!.performBlock {
+                self.backgroundContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
-            self.managedObjectContext.performBlock {
-                self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
+            self.managedObjectContext!.performBlock {
+                self.managedObjectContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
         }
     }

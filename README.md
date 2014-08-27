@@ -1,6 +1,6 @@
 # Step by Step Do IOS Swift CoreData Simple Demo #
 
-This is a simple demo of access IOS core data in swift. 
+This is a simple demo of access IOS core data in swift. Tested in Xcode6 beta6.
 
 ## Support multi-thread Contexts
 
@@ -36,13 +36,13 @@ I tried to write a NSManagedObject class named Member.swift according to [Implem
 
 It is WORKED . Thanks for joshhinman's contributions.
 
-PS. In Xcode6-beta3, You can generate NSManagedObject in swift, but you should add sentence like `@objc(Member)` manualy. 
+PS. After Xcode6-beta3, You can generate NSManagedObject in swift, but you should add sentence like `@objc(Member)` manualy. 
 
 ---
 
 Author : iascchen(at)gmail(dot)com
 
-Date : 2014-7-17
+Date : 2014-8-27
 
 新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 

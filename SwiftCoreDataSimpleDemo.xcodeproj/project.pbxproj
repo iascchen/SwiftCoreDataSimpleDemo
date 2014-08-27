@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C43C45FC2B16E532161D837 /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C43C9C302FFC5DAC87AA4A4 /* Member.m */; };
 		2C43C7CF06E371B9D54250A7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2C43C50261AE791B572ADAF3 /* README.md */; };
 		2C43CCC85E59FA6F215BA966 /* Family.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C43C47F85FBA147713B2DE9 /* Family.m */; };
+		8720DCD9198A189100A57881 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8720DCD8198A189100A57881 /* Entity.swift */; };
 		87794B371942DE1E0034663A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87794B361942DE1E0034663A /* AppDelegate.swift */; };
 		87794B3A1942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 87794B381942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld */; };
 		87794B3C1942DE1E0034663A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87794B3B1942DE1E0034663A /* Images.xcassets */; };
@@ -62,11 +62,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2C43C434D76707E546AC6A09 /* Family.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Family.h; sourceTree = "<group>"; };
-		2C43C47F85FBA147713B2DE9 /* Family.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Family.m; sourceTree = "<group>"; };
+		2C43C434D76707E546AC6A09 /* Family.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Family.h; path = SwiftCoreDataSimpleDemo/Family.h; sourceTree = "<group>"; };
+		2C43C47F85FBA147713B2DE9 /* Family.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Family.m; path = SwiftCoreDataSimpleDemo/Family.m; sourceTree = "<group>"; };
 		2C43C50261AE791B572ADAF3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = file.MD; path = README.md; sourceTree = "<group>"; };
-		2C43C8E2365E3DBDB6571003 /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Member.h; sourceTree = "<group>"; };
-		2C43C9C302FFC5DAC87AA4A4 /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Member.m; sourceTree = "<group>"; };
+		8720DCD8198A189100A57881 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		87794B311942DE1E0034663A /* SwiftCoreDataSimpleDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftCoreDataSimpleDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87794B351942DE1E0034663A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87794B361942DE1E0034663A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -145,12 +144,9 @@
 				87794B361942DE1E0034663A /* AppDelegate.swift */,
 				87794B3B1942DE1E0034663A /* Images.xcassets */,
 				87794B381942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld */,
+				8720DCD8198A189100A57881 /* Entity.swift */,
 				87794B341942DE1E0034663A /* Supporting Files */,
 				87C04B75196D229C00BDE70E /* CoreDataStore.swift */,
-				2C43C47F85FBA147713B2DE9 /* Family.m */,
-				2C43C9C302FFC5DAC87AA4A4 /* Member.m */,
-				2C43C8E2365E3DBDB6571003 /* Member.h */,
-				2C43C434D76707E546AC6A09 /* Family.h */,
 			);
 			path = SwiftCoreDataSimpleDemo;
 			sourceTree = "<group>";
@@ -183,6 +179,8 @@
 		87794B511942DEF30034663A /* models */ = {
 			isa = PBXGroup;
 			children = (
+				2C43C47F85FBA147713B2DE9 /* Family.m */,
+				2C43C434D76707E546AC6A09 /* Family.h */,
 				87794B521942DF3C0034663A /* SwiftCoreDataSimpleDemo-Bridging-Header.h */,
 				87C04B73196D206D00BDE70E /* Member.swift */,
 			);
@@ -343,10 +341,10 @@
 				87794B371942DE1E0034663A /* AppDelegate.swift in Sources */,
 				87794B8C1942FA770034663A /* swift_coredata_sample.md in Sources */,
 				87C04B74196D206D00BDE70E /* Member.swift in Sources */,
+				8720DCD9198A189100A57881 /* Entity.swift in Sources */,
 				87C04B76196D229C00BDE70E /* CoreDataStore.swift in Sources */,
 				87794B3A1942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld in Sources */,
 				2C43CCC85E59FA6F215BA966 /* Family.m in Sources */,
-				2C43C45FC2B16E532161D837 /* Member.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,7 +411,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -449,7 +447,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				METAL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
