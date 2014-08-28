@@ -82,17 +82,17 @@ class CoreDataHelper: NSObject{
     func contextDidSaveContext(notification: NSNotification) {
         let sender = notification.object as NSManagedObjectContext
         if sender === self.managedObjectContext {
-            NSLog("======= Saved main Context in this thread")
+            NSLog("******** Saved main Context in this thread")
             self.backgroundContext!.performBlock {
                 self.backgroundContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
         } else if sender === self.backgroundContext {
-            NSLog("======= Saved background Context in this thread")
+            NSLog("******** Saved background Context in this thread")
             self.managedObjectContext!.performBlock {
                 self.managedObjectContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
         } else {
-            NSLog("======= Saved Context in other thread")
+            NSLog("******** Saved Context in other thread")
             self.backgroundContext!.performBlock {
                 self.backgroundContext!.mergeChangesFromContextDidSaveNotification(notification)
             }

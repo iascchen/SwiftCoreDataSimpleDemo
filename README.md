@@ -1,6 +1,8 @@
 # Step by Step Do IOS Swift CoreData Simple Demo #
 
-This is a simple demo of access IOS core data in swift. Tested in Xcode6 beta6.
+This is a simple demo of access IOS core data in swift. 
+
+Tested in Xcode6 beta6.(2014-08-28)
 
 ## Support multi-thread Contexts
 
@@ -10,20 +12,21 @@ I changed the implements to support this best practice. We should better write d
 
 ## Step by Step
 
+### Common Steps
+
 1. Create an Empty Application, and select in Swift language and use CoreData.
-2. Create some entity in `SwiftCoreDataSimpleDemo.xcdatamodeld`, such as Family and Member. Generate the NSManagedObject files.
-3. Modify generated code about persistentStoreCoordinator in AppDelegate.swift to CoreDataStore.
-4. Modify generated code about NSManagedObjectContext in AppDelegate.swift to CoreDataHelper.
-5. Adjust AppDelegate.swift to use CoreDataStore and CoreDataHelper. 
-6. Add func demoFamily() and demoMember() to AppDelegate.swift, this func is a demo to access CoreData.
-7. If you want to use CoreDataHelper in UIViewController, you'd better add a CoreDataHelper instance for each UIViewController. All CoreDataHelper instance share one CoreDataStore defined in AppDelegate.swift.
+2. Modify generated code about persistentStoreCoordinator in AppDelegate.swift to CoreDataStore.
+3. Modify generated code about NSManagedObjectContext in AppDelegate.swift to CoreDataHelper.
+4. Adjust AppDelegate.swift to use CoreDataStore and CoreDataHelper. 
 
-There are a detail documents in Chinese at [here](https://github.com/iascchen/SwiftCoreDataSimpleDemo/blob/master/docs/swift_coredata_sample.md). 
-Or you can read the pictures and the codes. :)
+### Data Models
 
-## Write NSManagedObject in Swift 
+1. Create some entity in `SwiftCoreDataSimpleDemo.xcdatamodeld`, such as Family and Member. 
+2. Add "members" attribute of Family, set relationship with Member/family, and "to Many", select delete rule as "Cascaded".
+3. Add "family" attribute of Member, set relationship with Family/members, and "to One", unselect the checkbox of "Options".
+4. Generate the NSManagedObject files in Swift.
+5. You have to add sentences like `@objc(ClassName)` to Member.swift and Family.swift manually.  (Thanks for joshhinman's contributions.)
 
-I tried to write a NSManagedObject class named Member.swift according to [Implementing Core Data Managed Object Subclasses](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/WritingSwiftClassesWithObjective-CBehavior.html#//apple_ref/doc/uid/TP40014216-CH5-XID_66). 
 
     import CoreData
     
@@ -34,15 +37,24 @@ I tried to write a NSManagedObject class named Member.swift according to [Implem
         @NSManaged var birthday: NSDate
     }
 
-It is WORKED . Thanks for joshhinman's contributions.
+### About Demo Code
 
-PS. After Xcode6-beta3, You can generate NSManagedObject in swift, but you should add sentence like `@objc(Member)` manualy. 
+1. Add func demoFamily() to AppDelegate.swift, this is a demo of basic CoreData CRUD.
+2. Add func demoMember() to AppDelegate.swift, this is a demo of relationship, and delete cascaded.
+3. If you want to use CoreDataHelper in UIViewController, you'd better add a CoreDataHelper instance for each UIViewController. All CoreDataHelper instance share one CoreDataStore defined in AppDelegate.swift.
+4. Generally, We should better write data in private background context, and read data from main queue context. 
+5. BUT please make sure the context of saved the object is same with which fetched it.
+
+### Other
+
+There are a detail documents in Chinese at [here](https://github.com/iascchen/SwiftCoreDataSimpleDemo/blob/master/docs/swift_coredata_sample.md). 
+Or you can read the pictures and the codes. :)
 
 ---
 
 Author : iascchen(at)gmail(dot)com
 
-Date : 2014-8-27
+Date : 2014-8-28
 
 新浪微博 : [@问天鼓](http://www.weibo.com/iascchen)
 

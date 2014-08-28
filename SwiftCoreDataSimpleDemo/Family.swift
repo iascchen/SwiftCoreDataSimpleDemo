@@ -1,5 +1,5 @@
 //
-//  Member.swift
+//  Family.swift
 //  SwiftCoreDataSimpleDemo
 //
 //  Created by CHENHAO on 14-8-28.
@@ -9,12 +9,11 @@
 import Foundation
 import CoreData
 
-@objc(Member)
-class Member: NSManagedObject {
+@objc(Family)
+class Family: NSManagedObject {
 
-    @NSManaged var birthday: NSDate
+    @NSManaged var address: String
     @NSManaged var name: String
-    @NSManaged var sex: String
-    @NSManaged var family: Family
+    @NSManaged var members: NSSet
 
 }
