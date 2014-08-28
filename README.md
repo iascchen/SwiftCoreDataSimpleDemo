@@ -27,6 +27,7 @@ I changed the implements to support this best practice. We should better write d
 4. Generate the NSManagedObject files in Swift.
 5. You have to add sentences like `@objc(ClassName)` to Member.swift and Family.swift manually.  (Thanks for joshhinman's contributions.)
 
+such as: 
 
     import CoreData
     
