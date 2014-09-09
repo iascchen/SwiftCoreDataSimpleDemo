@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog(" ======== Insert ======== ")
         
         for newItemName in newItemNames {
-            var newItem: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.backgroundContext) as Family
+            var newItem: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.backgroundContext!) as Family
             
             newItem.name = newItemName
             NSLog("Inserted New Family for \(newItemName) ")
@@ -96,8 +96,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var sorter: NSSortDescriptor = NSSortDescriptor(key: "name" , ascending: false)
         fReq.sortDescriptors = [sorter]
         
+        fReq.returnsObjectsAsFaults = false
+        
         var result = self.cdh.managedObjectContext!.executeFetchRequest(fReq, error:&error)
-        for resultItem : AnyObject in result {
+        for resultItem in result! {
             var familyItem = resultItem as Family
             NSLog("Fetched Family for \(familyItem.name) ")
         }
@@ -108,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fReq = NSFetchRequest(entityName: "Family")
         result = self.cdh.backgroundContext!.executeFetchRequest(fReq, error:&error)
         
-        for resultItem : AnyObject in result {
+        for resultItem in result! {
             var familyItem = resultItem as Family
             NSLog("Deleted Family for \(familyItem.name) ")
             self.cdh.backgroundContext!.deleteObject(familyItem)
@@ -119,11 +121,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog(" ======== Check Delete ======== ")
         
         result = self.cdh.managedObjectContext!.executeFetchRequest(fReq, error:&error)
-        if result.isEmpty {
+        if result!.isEmpty {
             NSLog("Deleted All Families")
         }
         else{
-            for resultItem : AnyObject in result {
+            for resultItem in result! {
                 var familyItem = resultItem as Family
                 NSLog("Fetched Error Family for \(familyItem.name) ")
             }
@@ -134,7 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog(" ======================== ")
         NSLog(" ======== Member ======== ")
         
-        var family: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.backgroundContext) as Family
+        var family: Family = NSEntityDescription.insertNewObjectForEntityForName("Family", inManagedObjectContext: self.cdh.backgroundContext!) as Family
         family.name = "Fruits"
         
         // add Members
@@ -144,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSLog(" ======== Insert Member with family attribute ======== ")
         
         for newItemName in newItemNames {
-            var newItem: Member = NSEntityDescription.insertNewObjectForEntityForName("Member", inManagedObjectContext: self.cdh.backgroundContext) as Member
+            var newItem: Member = NSEntityDescription.insertNewObjectForEntityForName("Member", inManagedObjectContext: self.cdh.backgroundContext!) as Member
             
             newItem.name = newItemName
             newItem.family = family
@@ -165,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fReq.sortDescriptors = [sorter]
         
         var result = self.cdh.managedObjectContext!.executeFetchRequest(fReq, error:&error)
-        for resultItem : AnyObject in result {
+        for resultItem in result! {
             var memberItem = resultItem as Member
             NSLog("Fetched Member for \(memberItem.family.name) , \(memberItem.name)  ")
         }
@@ -177,7 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fReq.predicate = NSPredicate(format:"name == 'Fruits' ")
         
         result = self.cdh.managedObjectContext!.executeFetchRequest(fReq, error:&error)
-        for resultItem : AnyObject in result {
+        for resultItem in result! {
             var familyItem = resultItem as Family
             NSLog("Fetched Family for \(familyItem.name) ")
             
@@ -190,7 +192,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //delete family
         NSLog(" ======== Delete Family with cascade delete Members ======== ")
         
-        var familyItem = result[0] as Family
+        var familyItem = result![0] as Family
         self.cdh.managedObjectContext!.deleteObject(familyItem)
         
         self.cdh.saveContext(self.cdh.managedObjectContext!)
@@ -200,11 +202,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fReq = NSFetchRequest(entityName: "Member")
         
         result = self.cdh.backgroundContext!.executeFetchRequest(fReq, error:&error)
-        if result.isEmpty {
+        if result!.isEmpty {
             NSLog("Delete Successed")
         }
         else{
-            for resultItem : AnyObject in result {
+            for resultItem in result! {
                 var memberItem = resultItem as Member
                 NSLog("Delete Failed, \(memberItem.name)")
             }
