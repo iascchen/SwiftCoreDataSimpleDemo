@@ -1,6 +1,6 @@
-# Step by Step Do IOS Swift CoreData Simple Demo #
+# Step by Step Do iOS Swift CoreData Simple Demo #
 
-This is a simple demo of access IOS core data in swift. 
+This is a simple demo of access iOS core data in swift. 
 
 Tested in Xcode6.1 (2014-10-23)
 
