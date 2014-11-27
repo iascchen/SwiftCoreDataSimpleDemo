@@ -1,8 +1,8 @@
-# Step by Step Do IOS Swift CoreData Simple Demo #
+# Step by Step Do iOS Swift CoreData Simple Demo #
 
 ## 简介
 
-这篇文章记录了在 IOS 中使用 Swift 操作 CoreData 的一些基础性内容，由于缺乏文档，基本上都是自行实验的结果，错漏不可避免，还请谅解。
+这篇文章记录了在 iOS 中使用 Swift 操作 CoreData 的一些基础性内容，由于缺乏文档，基本上都是自行实验的结果，错漏不可避免，还请谅解。
 
 部分内容借鉴了 Tim Roadley 的《Learning.Core.Data.for.iOS(2013.11)》, 这本书主要介绍 ObjC的 CoreData 。
 
