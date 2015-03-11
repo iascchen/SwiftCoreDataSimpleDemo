@@ -2,7 +2,7 @@
 
 This is a simple demo of access iOS core data in swift. 
 
-Tested in Xcode6.1 (2014-10-23)
+Tested in Xcode6.2 (2015-3-10)
 
 ## Support multi-thread Contexts
 
