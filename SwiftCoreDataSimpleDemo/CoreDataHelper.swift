@@ -14,11 +14,11 @@ class CoreDataHelper: NSObject{
     let store: CoreDataStore!
     
     override init(){
-        super.init()
-        
         // all CoreDataHelper share one CoreDataStore defined in AppDelegate
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         self.store = appDelegate.cdstore
+        
+        super.init()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "contextDidSaveContext:", name: NSManagedObjectContextDidSaveNotification, object: nil)
     }
@@ -80,7 +80,7 @@ class CoreDataHelper: NSObject{
     
     // call back function by saveContext, support multi-thread
     func contextDidSaveContext(notification: NSNotification) {
-        let sender = notification.object as NSManagedObjectContext
+        let sender = notification.object as! NSManagedObjectContext
         if sender === self.managedObjectContext {
             NSLog("******** Saved main Context in this thread")
             self.backgroundContext!.performBlock {
