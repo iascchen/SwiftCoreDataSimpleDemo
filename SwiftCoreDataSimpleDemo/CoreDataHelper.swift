@@ -36,13 +36,11 @@ class CoreDataHelper: NSObject{
     
     // main thread context
     
-    lazy var managedObjectContext: NSManagedObjectContext? = {
+    
+    lazy var managedObjectContext: NSManagedObjectContext = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.store.persistentStoreCoordinator
-        if coordinator == nil {
-            return nil
-        }
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
         }()
@@ -54,10 +52,7 @@ class CoreDataHelper: NSObject{
     lazy var backgroundContext: NSManagedObjectContext? = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.store.persistentStoreCoordinator
-        if coordinator == nil {
-            return nil
-        }
-        var backgroundContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
+        var backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         backgroundContext.persistentStoreCoordinator = coordinator
         return backgroundContext
         }()
@@ -66,11 +61,16 @@ class CoreDataHelper: NSObject{
     // save NSManagedObjectContext
     func saveContext (context: NSManagedObjectContext) {
         var error: NSError? = nil
-        if context.hasChanges && !context.save(&error) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch let error1 as NSError {
+                error = error1
+                // Replace this implementation with code to handle the error appropriately.
+                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                NSLog("Unresolved error \(error), \(error!.userInfo)")
+                abort()
+            }
         }
     }
     
@@ -88,16 +88,16 @@ class CoreDataHelper: NSObject{
             }
         } else if sender === self.backgroundContext {
             NSLog("******** Saved background Context in this thread")
-            self.managedObjectContext!.performBlock {
-                self.managedObjectContext!.mergeChangesFromContextDidSaveNotification(notification)
+            self.managedObjectContext.performBlock {
+                self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
             }
         } else {
             NSLog("******** Saved Context in other thread")
             self.backgroundContext!.performBlock {
                 self.backgroundContext!.mergeChangesFromContextDidSaveNotification(notification)
             }
-            self.managedObjectContext!.performBlock {
-                self.managedObjectContext!.mergeChangesFromContextDidSaveNotification(notification)
+            self.managedObjectContext.performBlock {
+                self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
             }
         }
     }

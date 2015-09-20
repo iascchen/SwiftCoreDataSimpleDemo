@@ -31,6 +31,7 @@
 		87794B8A1942FA770034663A /* img15.png in Resources */ = {isa = PBXBuildFile; fileRef = 87794B781942FA770034663A /* img15.png */; };
 		87794B8B1942FA770034663A /* img16.png in Resources */ = {isa = PBXBuildFile; fileRef = 87794B791942FA770034663A /* img16.png */; };
 		87794B8C1942FA770034663A /* swift_coredata_sample.md in Sources */ = {isa = PBXBuildFile; fileRef = 87794B7A1942FA770034663A /* swift_coredata_sample.md */; };
+		8797F2C01BAEC1F400116F71 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8797F2BF1BAEC1F400116F71 /* main.storyboard */; settings = {ASSET_TAGS = (); }; };
 		87C04B76196D229C00BDE70E /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C04B75196D229C00BDE70E /* CoreDataStore.swift */; };
 		87F6712419AF4A0C00B6D368 /* Family.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F6712219AF4A0C00B6D368 /* Family.swift */; };
 		87F6712519AF4A0C00B6D368 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F6712319AF4A0C00B6D368 /* Member.swift */; };
@@ -90,6 +91,7 @@
 		87794B781942FA770034663A /* img15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img15.png; sourceTree = "<group>"; };
 		87794B791942FA770034663A /* img16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img16.png; sourceTree = "<group>"; };
 		87794B7A1942FA770034663A /* swift_coredata_sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = swift_coredata_sample.md; sourceTree = "<group>"; };
+		8797F2BF1BAEC1F400116F71 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		87C04B75196D229C00BDE70E /* CoreDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
 		87F6712219AF4A0C00B6D368 /* Family.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Family.swift; path = SwiftCoreDataSimpleDemo/Family.swift; sourceTree = "<group>"; };
 		87F6712319AF4A0C00B6D368 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Member.swift; path = SwiftCoreDataSimpleDemo/Member.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				87794B381942DE1E0034663A /* SwiftCoreDataSimpleDemo.xcdatamodeld */,
 				87794B341942DE1E0034663A /* Supporting Files */,
 				87C04B75196D229C00BDE70E /* CoreDataStore.swift */,
+				8797F2BF1BAEC1F400116F71 /* main.storyboard */,
 			);
 			path = SwiftCoreDataSimpleDemo;
 			sourceTree = "<group>";
@@ -262,11 +265,14 @@
 		87794B291942DE1E0034663A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = CHENHAO;
 				TargetAttributes = {
 					87794B301942DE1E0034663A = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = F29MNDM4PA;
 					};
 					87794B401942DE1E0034663A = {
 						CreatedOnToolsVersion = 6.0;
@@ -312,6 +318,7 @@
 				87794B8A1942FA770034663A /* img15.png in Resources */,
 				87794B811942FA770034663A /* img06.png in Resources */,
 				87794B821942FA770034663A /* img07.png in Resources */,
+				8797F2C01BAEC1F400116F71 /* main.storyboard in Resources */,
 				87794B831942FA770034663A /* img08.png in Resources */,
 				87794B891942FA770034663A /* img14.png in Resources */,
 				87794B881942FA770034663A /* img13.png in Resources */,
@@ -392,6 +399,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -406,7 +414,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -442,7 +450,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				METAL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -455,13 +463,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = SwiftCoreDataSimpleDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "me.iascchen.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftCoreDataSimpleDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -473,9 +485,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SwiftCoreDataSimpleDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "me.iascchen.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftCoreDataSimpleDemo-Bridging-Header.h";
 			};
 			name = Release;
@@ -495,6 +511,7 @@
 				INFOPLIST_FILE = SwiftCoreDataSimpleDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "me.iascchen.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -511,6 +528,7 @@
 				INFOPLIST_FILE = SwiftCoreDataSimpleDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "me.iascchen.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
