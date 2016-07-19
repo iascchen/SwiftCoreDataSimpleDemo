@@ -14,6 +14,6 @@ class Family: NSManagedObject {
 
     @NSManaged var address: String
     @NSManaged var name: String
-    @NSManaged var members: NSSet
+    @NSManaged var members: Set<Member>
 
 }
