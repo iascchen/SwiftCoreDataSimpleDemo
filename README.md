@@ -1,4 +1,4 @@
-# Step by Step Do iOS Swift CoreData Simple Demo #
+# Step by Step Do iOS Swift CoreData Simple Demo (deprecated)#
 
 This is a simple demo of access iOS core data in swift. 
 
